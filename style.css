@@ -1,0 +1,175 @@
+.contener{
+   
+}
+.wrapper{
+   margin: auto;
+   width: 640px;
+   height: 370px;
+   /* background-color: rgb(221 219 225); */
+   background-image: url(images/background1.jpg);
+   background-size: cover;
+   position: relative;
+}
+.button-blok{
+   position: relative;
+}
+.button-border{
+   position: absolute;
+   border-radius: 50%;
+   border: 2px solid rgb(185 185 185);
+   padding: 5px;
+}
+.button-border-black{
+   border-radius: 50%;
+   border: 2px solid rgb(17, 17, 17);
+}
+.button{
+   box-shadow: inset -1px 1px 1px 0px rgb(247 243 243 / 77%);
+   border-radius: 50%;
+   background-color: brown;
+   width: 35px;
+   height: 35px;
+}
+.button:hover{
+   box-shadow: -1px 1px 0px 0px rgb(247 243 243 / 77%);
+   
+}
+.button-blok>div:nth-child(1){
+   top: 225px;
+   left: 53px;
+}
+.button-blok>div:nth-child(2){
+   top: 293px;
+   left: 53px;
+}
+.button-blok>div:nth-child(3){
+   top: 225px;
+   left: 532px;
+}
+.button-blok>div:nth-child(4){
+   top: 293px;
+   left: 532px;
+}
+
+.button_m-border{
+   position: absolute;
+    top: 146px;
+    left: 540px;
+    border-radius: 13px/14px;
+    border: 2px solid rgb(185 185 185);
+    padding: 3px;
+}
+.button_m-border-black{
+   border-radius: 11px/10px;
+   border: 2px solid rgb(17, 17, 17);
+}
+
+.button_m{
+   box-shadow: inset -1px 1px 1px 0px rgb(247 243 243 / 77%);
+   border-radius: 9px/8px;
+   background-color: brown;
+   width: 28px;
+   height: 16px;
+}
+.button_m:hover{
+   
+   box-shadow: -1px 1px 0px 0px rgb(247 243 243 / 77%);
+   
+}
+.wolf{
+   position: relative;
+}
+.wolf-el{
+   display: none;
+}
+.wolf>div{
+   position: absolute;
+   background-size: cover;
+}
+.wolf>div:nth-child(1){
+   background-image: url(images/wolf1.png);
+   top: 159px;
+   left: 261px;
+   width: 64px;
+   height: 104px;
+}
+.wolf>div:nth-child(2){
+   background-image: url(images/wolf2.png);
+   top: 163px;
+   left: 313px;
+   width: 60px;
+   height: 99px;
+}
+
+.basket{
+   position: relative;
+}
+.basket-el{
+   display: none;
+}
+.basket>div{
+   position: absolute;
+   background-size: cover;
+}
+.basket>div:nth-child(1){
+   background-image: url(images/basket1.png);
+   top: 156px;
+   left: 227px;
+   width: 52px;
+   height: 53px;
+}
+.basket>div:nth-child(2){
+   background-image: url(images/basket2.png);
+   top: 209px;
+   left: 227px;
+   width: 52px;
+   height: 46px;
+}
+.basket>div:nth-child(3){
+   background-image: url(images/basket3.png);
+   top: 167px;
+   left: 366px;
+   width: 44px;
+   height: 43px;
+}
+.basket>div:nth-child(4){
+   background-image: url(images/basket4.png);
+   top: 211px;
+   left: 359px;
+   width: 50px;
+   height: 42px;
+}
+
+.egg_blok_1{
+   position: relative;
+}
+
+.egg{
+   position: absolute;
+  
+}
+.egg_blok_1>svg:nth-child(1){
+   top: 145px;
+    left: 179px;
+    transform: scale(1.9) rotate(58deg);
+}
+.egg_blok_1>svg:nth-child(2){
+   top: 147px;
+    left: 187px;
+    transform: scale(1.9) rotate(-160deg);
+}
+.egg_blok_1>svg:nth-child(3){
+   top: 156px;
+    left: 204px;
+    transform: scale(1.9) rotate(0deg);
+}
+.egg_blok_1>svg:nth-child(4){
+   top: 165px;
+   left: 214px;
+   transform: scale(1.9) rotate(70deg);
+}
+.egg_blok_1>svg:nth-child(5){
+   top: 172px;
+    left: 221px;
+    transform: scale(1.9) rotate(160deg);
+}
