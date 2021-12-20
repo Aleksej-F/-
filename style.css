@@ -31,8 +31,12 @@
    height: 35px;
 }
 .button:hover{
+  
+   cursor: pointer;
+}
+.button.down{
    box-shadow: -1px 1px 0px 0px rgb(247 243 243 / 77%);
-   
+  
 }
 .button-blok>div:nth-child(1){
    top: 225px;
@@ -51,13 +55,26 @@
    left: 532px;
 }
 
+.button-blok-m{
+   position: relative;
+}
+.button-blok-m>div:nth-child(1){
+   top: 25px;
+   left: 540px;;
+}
+.button-blok-m>div:nth-child(2){
+   top: 71px;
+   left: 540px;
+}
+.button-blok-m>div:nth-child(3){
+   top: 117px;
+   left: 540px;
+}
 .button_m-border{
    position: absolute;
-    top: 146px;
-    left: 540px;
-    border-radius: 13px/14px;
-    border: 2px solid rgb(185 185 185);
-    padding: 3px;
+   border-radius: 13px/14px;
+   border: 2px solid rgb(185 185 185);
+   padding: 3px;
 }
 .button_m-border-black{
    border-radius: 11px/10px;
@@ -71,8 +88,7 @@
    width: 28px;
    height: 16px;
 }
-.button_m:hover{
-   
+.button_m.down{
    box-shadow: -1px 1px 0px 0px rgb(247 243 243 / 77%);
    
 }
@@ -81,6 +97,9 @@
 }
 .wolf-el{
    display: none;
+}
+.wolf-el.active{
+   display: block;
 }
 .wolf>div{
    position: absolute;
@@ -107,6 +126,9 @@
 .basket-el{
    display: none;
 }
+.basket-el.active{
+   display: block;
+}
 .basket>div{
    position: absolute;
    background-size: cover;
@@ -130,7 +152,7 @@
    top: 167px;
    left: 366px;
    width: 44px;
-   height: 43px;
+   height: 45px;
 }
 .basket>div:nth-child(4){
    background-image: url(images/basket4.png);
@@ -146,30 +168,111 @@
 
 .egg{
    position: absolute;
-  
+   display: none; 
 }
-.egg_blok_1>svg:nth-child(1){
+.egg.active{
+   display: block;
+}
+.egg_blok_0>svg:nth-child(1){
    top: 145px;
-    left: 179px;
-    transform: scale(1.9) rotate(58deg);
+   left: 179px;
+   transform: scale(1.9) rotate(58deg);
 }
-.egg_blok_1>svg:nth-child(2){
+.egg_blok_0>svg:nth-child(2){
    top: 147px;
-    left: 187px;
-    transform: scale(1.9) rotate(-160deg);
+   left: 187px;
+   transform: scale(1.9) rotate(-160deg);
 }
-.egg_blok_1>svg:nth-child(3){
+.egg_blok_0>svg:nth-child(3){
    top: 156px;
-    left: 204px;
-    transform: scale(1.9) rotate(0deg);
+   left: 204px;
+   transform: scale(1.9) rotate(0deg);
 }
-.egg_blok_1>svg:nth-child(4){
+.egg_blok_0>svg:nth-child(4){
    top: 165px;
    left: 214px;
    transform: scale(1.9) rotate(70deg);
 }
-.egg_blok_1>svg:nth-child(5){
+.egg_blok_0>svg:nth-child(5){
    top: 172px;
-    left: 221px;
-    transform: scale(1.9) rotate(160deg);
+   left: 221px;
+   transform: scale(1.9) rotate(160deg);
+}
+
+.egg_blok_1>svg:nth-child(1){
+   top: 191px;
+   left: 173px;
+   transform: scale(1.9) rotate(177deg);
+}
+.egg_blok_1>svg:nth-child(2){
+   top: 194px;
+   left: 187px;
+   transform: scale(1.9) rotate(-126deg);
+}
+.egg_blok_1>svg:nth-child(3){
+   top: 207px;
+   left: 200px;
+   transform: scale(1.9) rotate(83deg);
+}
+.egg_blok_1>svg:nth-child(4){
+   top: 211px;
+   left: 215px;
+   transform: scale(1.9) rotate(-12deg);
+}
+.egg_blok_1>svg:nth-child(5){
+   top: 222px;
+   left: 225px;
+   transform: scale(1.9) rotate(81deg);
+}
+
+.egg_blok_2>svg:nth-child(1){
+   top: 144px;
+   left: 452px;
+   transform: scale(1.9) rotate(58deg);
+}
+.egg_blok_2>svg:nth-child(2){
+   top: 149px;
+   left: 441px;
+   transform: scale(1.9) rotate(7deg);
+}
+.egg_blok_2>svg:nth-child(3){
+   top: 154px;
+   left: 429px;
+   transform: scale(1.9) rotate(-22deg);
+}
+.egg_blok_2>svg:nth-child(4){
+   top: 159px;
+   left: 416px;
+   transform: scale(1.9) rotate(-70deg);
+}
+.egg_blok_2>svg:nth-child(5){
+   top: 169px;
+   left: 401px;
+   transform: scale(1.9) rotate(203deg);
+}
+
+.egg_blok_3>svg:nth-child(1){
+   top: 193px;
+   left: 449px;
+   transform: scale(1.9) rotate(125deg);
+}
+.egg_blok_3>svg:nth-child(2){
+   top: 195px;
+   left: 436px;
+   transform: scale(1.9) rotate(-144deg);
+}
+.egg_blok_3>svg:nth-child(3){
+   top: 204px;
+   left: 423px;
+   transform: scale(1.9) rotate(158deg);
+}
+.egg_blok_3>svg:nth-child(4){
+   top: 208px;
+   left: 415px;
+   transform: scale(1.9) rotate(-79deg);
+}
+.egg_blok_3>svg:nth-child(5){
+   top: 220px;
+   left: 406px;
+   transform: scale(1.9) rotate(-29deg);
 }
