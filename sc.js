@@ -241,7 +241,7 @@ class Game {
          [0,0,0,0,0,0],
       ]
       this.eggTotal = 0
-      interval =
+      
    }
 
 
