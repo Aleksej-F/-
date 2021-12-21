@@ -66,21 +66,21 @@ function delWolf(active, noActive){
 }
 
 class Egg {
-   block= '';
-   constructor() {
-      this.block =`
-      <svg width="8px" height="8px" xmlns="http://www.w3.org/2000/svg" class="egg" >
-                  <g inkscape:groupmode="layer" id="layer3" inkscape:label="Layer 2">
-                     <path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" 
-                     d="M 1.4072884,0.71640787 C 0.79510341,1.3178379 0.66082841,1.9442679 0.48855141,2.7793879 c -0.01894,0.90058 -0.04832,1.14409
-                        0.108577,2.01288 0.182144,0.57693 0.388154,1.21694 1.22776899,1.72055 0.65188,0.27383 0.807937,0.32271 1.277884,0.26726 0.564961,-0.0415
-                        0.912057,-0.34618 1.169304,-0.65147 0.36236,-0.49781 0.480609,-0.97097 0.517833,-1.56185 -0.03993,-0.55973 -0.0452,-1.05629 
-                        -0.300678,-1.63703 -0.177904,-0.40174 -0.367094,-0.70654 -0.768399,-1.14425 -0.359651,-0.33845 -0.579084,-0.50113 -0.977205,-0.71829
-                        C 2.1864914,0.82057787 1.8260394,0.73694787 1.4072884,0.71640787 Z" 
-                     id="path4531" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccc"/></g>
-               </svg>
-   `
-   }
+   block= `
+   <svg width="8px" height="8px" xmlns="http://www.w3.org/2000/svg" class="egg" >
+               <g inkscape:groupmode="layer" id="layer3" inkscape:label="Layer 2">
+                  <path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" 
+                  d="M 1.4072884,0.71640787 C 0.79510341,1.3178379 0.66082841,1.9442679 0.48855141,2.7793879 c -0.01894,0.90058 -0.04832,1.14409
+                     0.108577,2.01288 0.182144,0.57693 0.388154,1.21694 1.22776899,1.72055 0.65188,0.27383 0.807937,0.32271 1.277884,0.26726 0.564961,-0.0415
+                     0.912057,-0.34618 1.169304,-0.65147 0.36236,-0.49781 0.480609,-0.97097 0.517833,-1.56185 -0.03993,-0.55973 -0.0452,-1.05629 
+                     -0.300678,-1.63703 -0.177904,-0.40174 -0.367094,-0.70654 -0.768399,-1.14425 -0.359651,-0.33845 -0.579084,-0.50113 -0.977205,-0.71829
+                     C 2.1864914,0.82057787 1.8260394,0.73694787 1.4072884,0.71640787 Z" 
+                  id="path4531" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccc"/></g>
+            </svg>
+`;
+   // constructor() {
+   //    this.block =
+   // }
       
 }
 
@@ -133,9 +133,7 @@ class ButtonM {
       this.blok = `
          <div class="button_m-border">
             <div class="button_m-border-black">
-               <div class="button_m " date="${n}"
-               
-               ></div>
+               <div class="button_m " date="${n}"></div>
             </div>
          </div>
       `
@@ -181,22 +179,13 @@ class ButtonBlokM {
       switch (n) {
          case  '0':
            // blokEgg.game();
-            game.startGame(1)   
-           let eddg = 0
+            game.startGame(1,0)   
+           
              let int = setTimeout(function run() {
 
-               game.game(eddg);
-                  ++eddg 
-                  console.log(eddg)
-                 if (eddg === 5) {
-                  console.log('eddg')
-                    if (game.wolfPosition == 0){
-
-                     game.upTotal()
-                     console.log('total-',game.getTotal())
-                    }else { return }
-                    eddg = 0
-                 } 
+               game.gameA();
+                 
+                 
                 setTimeout(run, 1000);
               }, 100);
             
@@ -221,44 +210,187 @@ class ButtonBlokM {
 
 }
 class Game {
-   wolfPosition = ''
+   wolfPosition = 0
    total = 0
-   constructor(n) {
-      this.wolfPosition =''
-      this.total = 0
-   }
+   counter = 0
+   sped = 1000
+   interval = 5
+   maxEgg = 5
+   zeroingSped = [5, 100, 200, 500, 999]
+   upSped = [5, 10, 15, 20, ]
+   countUpSped = 0
+   predNewEgg = 4
+   eggTotal = 0
+   trays =[
+      [0,0,0,0,0,0],
+      [0,0,0,0,0,0],
+      [0,0,0,0,0,0],
+      [0,0,0,0,0,0],
+   ]
+   // constructor(n) {
+   //    this.wolfPosition =''
+   //    this.total = 0
+   // }
 
    upTotal(){
       ++this.total
    }
-
+   upCounter(){
+      ++this.counter
+   }
    getTotal(){
       return this.total
    }
 
 
    craateWolfPosition(n){
-      console.log('hgjghjghj-',n)
+      console.log('положение волка-',n)
       this.wolfPosition = n
       createWolf(n)
    }
 
-   startGame(n){
+   startGame(n,l){
       this.total = 0
       this.craateWolfPosition(n)
+      this.newTrays(l)
+      
    }
 
+   gameA() {
+      
+      this.rendering()
+      this.checkTrays()
+      this.offsetTrays()
+      this.upCounter() //
+      this.controlCounter()
+   }
 
-   game(eddg) {
-      const egg_blok= document.querySelector('.egg_blok_0')
+   //новое яйцо
+   newTrays(lot){
       
-      for (let i = 0; i < 5; i++){
-         egg_blok.children[i].classList.remove('active')
+      this.trays[lot][0] = 1
+      ++this.eggTotal
+      console.log(this.eggTotal)
+   }
+   //смещение яиц на лотках
+   offsetTrays(){
+      for (let index = 0; index < 4; index++) {
+         this.trays[index].pop()
+         this.trays[index].unshift(0)
       }
-       
-      //console.dir(egg_blok.children)
-      egg_blok.children[eddg].classList.add('active')
-      
+     
+   }
+   //проверка на попадание в корзину
+   checkTrays(){
+      for (let index = 0; index < 4; index++) {
+         if (this.trays[index][5] === 1) {
+            
+            if ( +this.wolfPosition === +index){
+               this.upTotal() //увеличить счет
+               console.log('счет -', this.getTotal())//отрисовка счета
+            } else { 
+               console.log("яйцо упало")//}
+               this.eggFallen(+index)
+            }
+            --this.eggTotal
+         }
+      }
+   }
+
+   controlCounter(){
+      if (this.counter % this.interval === 0 && this.eggTotal < 6){
+         let n = 0
+         do {
+            n = Math.floor(Math.random() * 4)
+            } while (n === this.predNewEgg);
+          this.predNewEgg = n
+         
+         //console.log('новое яйцо на лотке -',n)
+         this.newTrays(n)
+      }
+      if (this.total === this.upSped[this.countUpSped]) {
+         --this.interval 
+         ++this.countUpSped
+      }
+
+   }
+
+   rendering(){
+      for (let er = 0; er < 4; er++){
+         let egg_blok= document.querySelector(`.egg_blok_${er}`)
+         for (let i = 0; i < 5; i++){
+            if (this.trays[er][i] === 1) {
+               egg_blok.children[i].classList.add('active')
+            } else {
+               egg_blok.children[i].classList.remove('active')
+            }
+            
+         }
+         
+         
+      }
+   }
+   async eggFallen(n){
+      switch (n) {
+         case 0:
+         case 1:
+            const blok = document.querySelector('.chicken_blok_left');
+            let rr=0
+            setTimeout(function eggRend() {
+               if (rr<5) {
+                  blok.children[rr].classList.add('active')
+               }
+                              
+               if (rr>0){
+                  blok.children[rr-1].classList.remove('active') 
+               }
+                  
+               
+                  rr++
+                  if (rr===6){return }
+                setTimeout(eggRend, 800);
+              }, 100);
+           
+            
+            // for (let i = 0; i<5; i++) {
+            //    blok.children[i].classList.add('active')
+            //    setTimeout(() =>{
+            //       blok.children[i].classList.remove('active')
+            //    }, 800);
+            // }
+            
+               console.dir(blok)
+              
+               
+              
+               
+           
+         
+         break;
+         case 2:
+         case 3:
+            // const blok = document.querySelector('.chicken_blok_right');
+            // let rr=0
+            // setTimeout(function eggRend() {
+            //    if (rr<5) {
+            //       blok.children[rr].classList.add('active')
+            //    }
+                              
+            //    if (rr>0){
+            //       blok.children[rr-1].classList.remove('active') 
+            //    }
+                  
+               
+            //       rr++
+            //       if (rr===6){return }
+            //     setTimeout(eggRend, 800);
+            //   }, 100);
+            
+         break;
+         
+         default:
+             break;
+      }
       
    }
 }
@@ -270,3 +402,5 @@ const blokButtonM = new ButtonBlokM (3)
 blokButtonM.creatButtonBlokM()
 
 const game = new Game()
+
+console.log( game)
