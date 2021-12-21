@@ -179,6 +179,7 @@ class ButtonBlokM {
       switch (n) {
          case  '0':
            // blokEgg.game();
+            
             game.startGame(1,0)   
             game.gameVisible('a')
              let int = setTimeout(function run() {
@@ -221,6 +222,7 @@ class Game {
    countUpSped = 0 // номер в массиве upSped
    predNewEgg = 4 //номер лотка на котором было предыдущее яйцо
    eggTotal = 0 //колличество яиц на лотках
+   
    trays =[
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
@@ -288,6 +290,7 @@ class Game {
             
             if ( +this.wolfPosition === +index){
                this.upTotal() //увеличить счет
+               score.rendering(this.getTotal())
                console.log('счет -', this.getTotal())//отрисовка счета
             } else { 
                console.log("яйцо упало")//}
@@ -404,6 +407,39 @@ class Game {
       }
    }
 }
+class Scoreboard {
+   numbers = {
+      0: [1,1,1,0,1,1,1],
+      1: [0,0,1,0,0,1,0],
+      2: [0,1,1,1,1,0,1],
+      3: [0,1,1,1,0,1,1],
+      4: [1,0,1,1,0,1,0],
+      5: [1,0,1,1,0,1,0],
+      6: [1,1,0,1,1,1,1],
+      7: [0,1,1,0,0,1,0],
+      8: [1,1,1,1,1,1,1],
+      9: [1,1,1,1,0,1,1]
+   }
+
+   rendering(n) {
+      const str = n.toString()
+      const arir = str.split('')
+      const score = document.querySelectorAll('.blok-z');
+      let sch = arir.length - 1
+      for (let i = 0; i < arir.length; i++){
+         for (let index = 0; index < 7; index++) {
+            if (this.numbers[arir[i]][index] == 1) {
+               score[sch].children[index].classList.add('active')
+            } else {
+               score[sch].children[index].classList.remove('active')
+            }
+         }
+         sch--
+      }
+   }
+
+}
+
 
 const blokEgg = new Pole()
 blokEgg.activatePole()
@@ -412,5 +448,5 @@ const blokButtonM = new ButtonBlokM (3)
 blokButtonM.creatButtonBlokM()
 
 const game = new Game()
-
-console.log( game)
+const score = new Scoreboard()
+//console.log( game)

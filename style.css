@@ -388,3 +388,136 @@
    height: 11px;
    background-image: url(images/gameB.png);
 }
+.hare{
+   display: none;
+   position: absolute;
+   top: 80px;
+   left: 196px;
+   width: 51px;
+   height: 61px;
+   background-image: url(images/hare.png);
+   background-size: cover;
+}
+.hare.active{
+   display: none;
+}
+.egg_broken_blok{
+   position: relative;
+}
+.egg_broken{
+   background-size: cover;
+   position: absolute;
+   display: none;
+}
+.egg_broken.active{
+   display: block;
+}
+.egg_broken_blok>div:nth-child(1){
+   top: 130px;
+   left: 378px;
+   width: 21px;
+   height: 24px;
+   background-image: url(images/begg1.png);
+}
+.egg_broken_blok>div:nth-child(2){
+   top: 130px;
+   left: 352px;
+   width: 21px;
+   height: 24px;
+   background-image: url(images/begg2.png);
+
+}
+.egg_broken_blok>div:nth-child(3){
+   top: 130px;
+   left: 327px;
+   width: 21px;
+   height: 24px;
+   background-image: url(images/begg3.png);
+}
+
+.blok-blok-z{
+   position: relative;
+}
+
+.blok-z{
+   position: absolute;
+   width: 18px;
+   height: 35px;
+   /* background-color: rgba(165, 42, 42, 0.322); */
+
+}
+.blok-blok-z>div:nth-child(1){
+   top: 87px;
+   left: 403px;
+}
+.blok-blok-z>div:nth-child(2){
+   top: 87px;
+   left: 373px;
+}
+.blok-blok-z>div:nth-child(3){
+   top: 87px;
+   left: 335px;
+}
+.blok-blok-z>div:nth-child(4){
+   top: 87px;
+   left: 305px;
+}
+   
+.z-el{
+   background-size: cover;
+   position: absolute;
+   display: none;
+}
+.z-el.active{
+   display: block;
+}
+.blok-z>div:nth-child(1){
+   top: 2px;
+   left: 1px;
+   width: 5px;
+   height: 14px;
+   background-image: url(images/z1.png);
+}
+.blok-z>div:nth-child(2){
+   top: 0px;
+   left: 5px;
+   width: 10px;
+   height: 5px;
+   background-image: url(images/z2.png);
+
+}
+.blok-z>div:nth-child(3){
+   top: 2px;
+   left: 13px;
+   width: 5px;
+   height: 15px;
+   background-image: url(images/z3.png);
+}
+.blok-z>div:nth-child(4){
+   top: 15px;
+   left: 4px;
+   width: 9px;
+   height: 5px;
+   background-image: url(images/z4.png);
+}
+.blok-z>div:nth-child(5){
+   top: 18px;
+   left: 0px;
+   width: 5px;
+   height: 13px;
+   background-image: url(images/z5.png);
+}
+.blok-z>div:nth-child(6){
+   top: 18px;
+   left: 11px;
+   width: 6px;
+   height: 13px;
+   background-image: url(images/z6.png);
+}
+.blok-z>div:nth-child(7){
+   top: 30px;
+   left: 3px;
+   width: 10px;
+   height: 5px;
+   background-image: url(images/z7.png);
+}
