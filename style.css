@@ -324,3 +324,67 @@
    height: 21px;
    background-image: url(images/bl5.png);
 }
+/* .chicken_blok_right>div{ display: block;} */
+
+
+.chicken_blok_right>div:nth-child(1){
+   top: 259px;
+   left: 376px;
+   width: 49px;
+   height: 27px;
+   background-image: url(images/br1.png);
+}
+.chicken_blok_right>div:nth-child(2){
+   top: 234px;
+   left: 403px;
+   width: 29px;
+   height: 25px;
+   background-image: url(images/br2.png);
+}
+.chicken_blok_right>div:nth-child(3){
+   top: 247px;
+   left: 429px;
+   width: 15px;
+   height: 22px;
+   background-image: url(images/br3.png);
+}
+.chicken_blok_right>div:nth-child(4){
+   top: 248px;
+   left: 445px;
+   width: 16px;
+   height: 21px;
+   background-image: url(images/br4.png);
+}
+.chicken_blok_right>div:nth-child(5){
+   top: 247px;
+   left: 462px;
+   width: 16px;
+   height: 22px;
+   background-image: url(images/br5.png);
+}
+
+.game_blok{
+   position: relative;
+}
+.game{
+   background-size: cover;
+   position: absolute;
+   display: none;
+}
+.game.active{
+   display: block;
+}
+.game_blok>div:nth-child(1){
+   top: 281px;
+   left: 160px;
+   width: 44px;
+   height: 11px;
+   background-image: url(images/gameA.png);
+}
+.game_blok>div:nth-child(2){
+   top: 280px;
+   left: 433px;
+   width: 43px;
+   height: 11px;
+   background-image: url(images/gameB.png);
+}

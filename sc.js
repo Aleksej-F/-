@@ -180,18 +180,18 @@ class ButtonBlokM {
          case  '0':
            // blokEgg.game();
             game.startGame(1,0)   
-           
+            game.gameVisible('a')
              let int = setTimeout(function run() {
 
                game.gameA();
                  
                  
-                setTimeout(run, 1000);
+                setTimeout(run, game.sped);
               }, 100);
             
             break;
          case '1':
-            
+            game.gameVisible('b')
             break;
          case '2':
             
@@ -210,23 +210,24 @@ class ButtonBlokM {
 
 }
 class Game {
-   wolfPosition = 0
-   total = 0
-   counter = 0
-   sped = 1000
-   interval = 5
-   maxEgg = 5
+   wolfPosition = 0 //положение волка
+   total = 0 // счетчик очков
+   counter = 0 // счетчик тактов
+   sped = 1000 // переодичность обновления кадра
+   interval = 5 // интервал появления новых яиц
+   maxEgg = 5 //максимальное количество яиц на лотках
    zeroingSped = [5, 100, 200, 500, 999]
    upSped = [5, 10, 15, 20, ]
-   countUpSped = 0
-   predNewEgg = 4
-   eggTotal = 0
+   countUpSped = 0 // номер в массиве upSped
+   predNewEgg = 4 //номер лотка на котором было предыдущее яйцо
+   eggTotal = 0 //колличество яиц на лотках
    trays =[
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
    ]
+   brokenEgg = 0 // счетчик разбитых яиц
    // constructor(n) {
    //    this.wolfPosition =''
    //    this.total = 0
@@ -369,22 +370,22 @@ class Game {
          break;
          case 2:
          case 3:
-            // const blok = document.querySelector('.chicken_blok_right');
-            // let rr=0
-            // setTimeout(function eggRend() {
-            //    if (rr<5) {
-            //       blok.children[rr].classList.add('active')
-            //    }
+            const blok1 = document.querySelector('.chicken_blok_right');
+            let rr1=0
+            setTimeout(function eggRend() {
+               if (rr1<5) {
+                  blok1.children[rr1].classList.add('active')
+               }
                               
-            //    if (rr>0){
-            //       blok.children[rr-1].classList.remove('active') 
-            //    }
+               if (rr1>0){
+                  blok1.children[rr1-1].classList.remove('active') 
+               }
                   
                
-            //       rr++
-            //       if (rr===6){return }
-            //     setTimeout(eggRend, 800);
-            //   }, 100);
+                  rr1++
+                  if (rr1===6){return }
+                setTimeout(eggRend, 800);
+              }, 100);
             
          break;
          
@@ -392,6 +393,15 @@ class Game {
              break;
       }
       
+   }
+
+   gameVisible(n){
+      const blok = document.querySelector('.game_blok');
+      if (n==="a") {
+         blok.children[0].classList.add('active')
+      } else if (n==="b") {
+         blok.children[1].classList.add('active')
+      }
    }
 }
 
