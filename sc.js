@@ -18,15 +18,11 @@ function buttonDown(e) {
     } else{
       createWolf(n)
    }
-  
-  
 }
 
 function buttonUp(e) {
    e.stopPropagation();
-   
    e.target.classList.remove('down')
-   
 }
 //отрисовка волка
 function createWolf(n) {
@@ -105,8 +101,6 @@ class EggBlok {
       </div>`
       eggBlok.insertAdjacentHTML("beforeend", bloki);
    }
-
-   
 }
 class Pole {
    pole = []
@@ -122,8 +116,6 @@ class Pole {
         element.creatEggBlok()
       });
    }
-
-   
 }
 
 class ButtonM {
@@ -172,24 +164,20 @@ class ButtonBlokM {
    
    buttonDown(e) {
       e.stopPropagation();
-
       const n = e.target.attributes.date.value
-      console.log(n)
       e.target.classList.add('down')
       switch (n) {
          case  '0':
-           // blokEgg.game();
-            
-            game.startGame(1,0)   
-            game.gameVisible('a')
-             let int = setTimeout(function run() {
-
-               game.gameA();
-                 
-                 
-                setTimeout(run, game.sped);
-              }, 100);
-            
+            if (game.gameStart) { 
+               break
+            } else {
+               game.startGame(1,0)   
+               game.gameVisible('a')
+               let int = setTimeout(function run() {
+                  game.gameA();
+                  setTimeout(run, game.sped);
+               }, 100)
+            }
             break;
          case '1':
             game.gameVisible('b')
@@ -197,7 +185,6 @@ class ButtonBlokM {
          case '2':
             
             break;
-         
          default:
              break;
       }
@@ -222,14 +209,15 @@ class Game {
    countUpSped = 0 // номер в массиве upSped
    predNewEgg = 4 //номер лотка на котором было предыдущее яйцо
    eggTotal = 0 //колличество яиц на лотках
-   
-   trays =[
+   brokenEgg = 0 // счетчик разбитых яиц
+   gameStart = false
+   trays = [
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
       [0,0,0,0,0,0],
    ]
-   brokenEgg = 0 // счетчик разбитых яиц
+   
    // constructor(n) {
    //    this.wolfPosition =''
    //    this.total = 0
@@ -245,9 +233,19 @@ class Game {
       return this.total
    }
 
+   traysNull() {
+      this.trays = [
+         [0,0,0,0,0,0],
+         [0,0,0,0,0,0],
+         [0,0,0,0,0,0],
+         [0,0,0,0,0,0],
+      ]
+      this.eggTotal = 0
+      interval =
+   }
+
 
    craateWolfPosition(n){
-      console.log('положение волка-',n)
       this.wolfPosition = n
       createWolf(n)
    }
@@ -256,11 +254,10 @@ class Game {
       this.total = 0
       this.craateWolfPosition(n)
       this.newTrays(l)
-      
+      this.gameStart = true
    }
 
    gameA() {
-      
       this.rendering()
       this.checkTrays()
       this.offsetTrays()
@@ -270,10 +267,8 @@ class Game {
 
    //новое яйцо
    newTrays(lot){
-      
       this.trays[lot][0] = 1
       ++this.eggTotal
-      console.log(this.eggTotal)
    }
    //смещение яиц на лотках
    offsetTrays(){
@@ -281,19 +276,18 @@ class Game {
          this.trays[index].pop()
          this.trays[index].unshift(0)
       }
-     
    }
    //проверка на попадание в корзину
    checkTrays(){
       for (let index = 0; index < 4; index++) {
          if (this.trays[index][5] === 1) {
-            
             if ( +this.wolfPosition === +index){
                this.upTotal() //увеличить счет
                score.rendering(this.getTotal())
-               console.log('счет -', this.getTotal())//отрисовка счета
+              // console.log('счет -', this.getTotal())//отрисовка счета
             } else { 
-               console.log("яйцо упало")//}
+              // console.log("яйцо упало")//}
+               this.traysNull()
                this.eggFallen(+index)
             }
             --this.eggTotal
@@ -302,14 +296,12 @@ class Game {
    }
 
    controlCounter(){
-      if (this.counter % this.interval === 0 && this.eggTotal < 6){
+      if (this.counter % this.interval === 0 && this.eggTotal < this.maxEgg){
          let n = 0
          do {
             n = Math.floor(Math.random() * 4)
-            } while (n === this.predNewEgg);
-          this.predNewEgg = n
-         
-         //console.log('новое яйцо на лотке -',n)
+         } while (n === this.predNewEgg);
+         this.predNewEgg = n
          this.newTrays(n)
       }
       if (this.total === this.upSped[this.countUpSped]) {
@@ -328,12 +320,10 @@ class Game {
             } else {
                egg_blok.children[i].classList.remove('active')
             }
-            
          }
-         
-         
       }
    }
+
    async eggFallen(n){
       switch (n) {
          case 0:
@@ -363,7 +353,7 @@ class Game {
             //    }, 800);
             // }
             
-               console.dir(blok)
+               //console.dir(blok)
               
                
               
@@ -402,11 +392,14 @@ class Game {
       const blok = document.querySelector('.game_blok');
       if (n==="a") {
          blok.children[0].classList.add('active')
+         blok.children[1].classList.remove('active')
       } else if (n==="b") {
          blok.children[1].classList.add('active')
+         blok.children[0].classList.remove('active')
       }
    }
 }
+
 class Scoreboard {
    numbers = {
       0: [1,1,1,0,1,1,1],
