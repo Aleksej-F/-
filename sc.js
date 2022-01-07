@@ -11,9 +11,8 @@ button.forEach(element => {
 
 function buttonDown(e) {
    e.stopPropagation();
-   
-  const n = e.target.attributes.date.value
-  e.target.classList.add('down')
+   const n = e.target.attributes.date.value
+   e.target.classList.add('down')
    if (game){game.craateWolfPosition(n)
     } else{
       createWolf(n)
@@ -26,7 +25,6 @@ function buttonUp(e) {
 }
 //отрисовка волка
 function createWolf(n) {
-  
    delBasket()
    switch (+n) {
       case  0:
@@ -46,7 +44,7 @@ function createWolf(n) {
          delWolf(1,0)
          break;
       default:
-          break;
+         break;
    }
 }
 //стирание корзины
@@ -61,6 +59,7 @@ function delWolf(active, noActive){
    wolf[noActive].classList.remove('active')
 }
 
+// яйцо
 class Egg {
    block= `
    <svg width="8px" height="8px" xmlns="http://www.w3.org/2000/svg" class="egg" >
@@ -73,13 +72,9 @@ class Egg {
                      C 2.1864914,0.82057787 1.8260394,0.73694787 1.4072884,0.71640787 Z" 
                   id="path4531" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccc"/></g>
             </svg>
-`;
-   // constructor() {
-   //    this.block =
-   // }
-      
+   `;
 }
-
+// лоток с яйцами
 class EggBlok {
    blok=[]
    classListy=""
@@ -102,25 +97,23 @@ class EggBlok {
       eggBlok.insertAdjacentHTML("beforeend", bloki);
    }
 }
+// поле из 4-х лотков
 class Pole {
    pole = []
-   
    constructor(){
       for (let index = 0; index < 4; index++) {
          this.pole.push(new EggBlok(5,`egg_blok_${index}` )) ;
       }
    }
-
    activatePole(){
       this.pole.forEach(element => {
         element.creatEggBlok()
       });
    }
 }
-
+//кнока управления режимами
 class ButtonM {
    blok=""
-   
    constructor (n) {
       this.blok = `
          <div class="button_m-border">
@@ -130,19 +123,16 @@ class ButtonM {
          </div>
       `
    }
-  
 }
-
+//блок кнопок управления режимаки игры и время
 class ButtonBlokM {
    blok=[]
-   
    constructor(n){
       for (let index = 0; index < n; index++) {
          this.blok.push(new ButtonM(index)) ;
       }
-      
    }
-
+   // добавление кнопок в дом и навешивание слушателей нажатия и отпускания кнопки
    creatButtonBlokM() {
       let bl = ''
       this.blok.forEach(element => {
@@ -161,7 +151,7 @@ class ButtonBlokM {
       });
    }
 
-   
+   //функция обработки нажания на кнопку 
    buttonDown(e) {
       e.stopPropagation();
       const n = e.target.attributes.date.value
@@ -183,20 +173,20 @@ class ButtonBlokM {
             game.gameVisible('b')
             break;
          case '2':
-            
             break;
          default:
              break;
       }
    }
 
+   // функция отпускания кнопки
    buttonUp(e) {
       e.stopPropagation();
-   
-   e.target.classList.remove('down')
+      e.target.classList.remove('down')
    }
 
 }
+
 class Game {
    wolfPosition = 0 //положение волка
    total = 0 // счетчик очков
@@ -218,11 +208,6 @@ class Game {
       [0,0,0,0,0,0],
    ]
    
-   // constructor(n) {
-   //    this.wolfPosition =''
-   //    this.total = 0
-   // }
-
    upTotal(){
       ++this.total
    }
@@ -232,7 +217,7 @@ class Game {
    getTotal(){
       return this.total
    }
-
+   //обнуления счета
    traysNull() {
       this.trays = [
          [0,0,0,0,0,0],
@@ -241,9 +226,7 @@ class Game {
          [0,0,0,0,0,0],
       ]
       this.eggTotal = 0
-      
    }
-
 
    craateWolfPosition(n){
       this.wolfPosition = n
@@ -270,6 +253,7 @@ class Game {
       this.trays[lot][0] = 1
       ++this.eggTotal
    }
+
    //смещение яиц на лотках
    offsetTrays(){
       for (let index = 0; index < 4; index++) {
@@ -308,7 +292,6 @@ class Game {
          --this.interval 
          ++this.countUpSped
       }
-
    }
 
    rendering(){
@@ -324,6 +307,7 @@ class Game {
       }
    }
 
+   //анимация в случае падения яйца
    async eggFallen(n){
       switch (n) {
          case 0:
@@ -338,12 +322,10 @@ class Game {
                if (rr>0){
                   blok.children[rr-1].classList.remove('active') 
                }
-                  
-               
                   rr++
                   if (rr===6){return }
                 setTimeout(eggRend, 800);
-              }, 100);
+            }, 100);
            
             
             // for (let i = 0; i<5; i++) {
@@ -354,12 +336,6 @@ class Game {
             // }
             
                //console.dir(blok)
-              
-               
-              
-               
-           
-         
          break;
          case 2:
          case 3:
@@ -373,8 +349,6 @@ class Game {
                if (rr1>0){
                   blok1.children[rr1-1].classList.remove('active') 
                }
-                  
-               
                   rr1++
                   if (rr1===6){return }
                 setTimeout(eggRend, 800);
@@ -387,7 +361,7 @@ class Game {
       }
       
    }
-
+   //отрисовка игра А или игра Б
    gameVisible(n){
       const blok = document.querySelector('.game_blok');
       if (n==="a") {
@@ -399,7 +373,7 @@ class Game {
       }
    }
 }
-
+// цифры для счета
 class Scoreboard {
    numbers = {
       0: [1,1,1,0,1,1,1],
@@ -413,7 +387,7 @@ class Scoreboard {
       8: [1,1,1,1,1,1,1],
       9: [1,1,1,1,0,1,1]
    }
-
+   //отрисовка счета
    rendering(n) {
       const str = n.toString()
       const arir = str.split('')
@@ -433,7 +407,6 @@ class Scoreboard {
 
 }
 
-
 const blokEgg = new Pole()
 blokEgg.activatePole()
 
@@ -442,4 +415,5 @@ blokButtonM.creatButtonBlokM()
 
 const game = new Game()
 const score = new Scoreboard()
+
 //console.log( game)
