@@ -10,6 +10,33 @@
    background-size: cover;
    position: relative;
 }
+.time_sound{
+   position: relative;
+}
+.time_sound-button{
+   position: absolute;
+   width: 14px;
+   height: 14px;
+   left: 591px;
+   border-radius: 50%;
+   background-color: rgb(12, 12, 12);
+}
+.time_sound>div:nth-child(1){
+   top: 59px;
+   
+}
+.time_sound>div:nth-child(2){
+   top: 103px;
+   
+}
+.time_sound-button:hover{
+   cursor: pointer;
+   outline: 0.5px solid rgb(105, 105, 105);
+    /* box-shadow: inset 1px 1px 0px 0px rgb(247 243 243 / 77%);  */
+}
+
+
+
 .button-blok{
    position: relative;
 }
@@ -31,8 +58,8 @@
    height: 35px;
 }
 .button:hover{
+  cursor: pointer;
   
-   cursor: pointer;
 }
 .button.down{
    box-shadow: -1px 1px 0px 0px rgb(247 243 243 / 77%);
@@ -88,9 +115,11 @@
    width: 28px;
    height: 16px;
 }
+.button_m:hover{
+   cursor: pointer;
+ }
 .button_m.down{
    box-shadow: -1px 1px 0px 0px rgb(247 243 243 / 77%);
-   
 }
 .wolf{
    position: relative;
@@ -160,13 +189,10 @@
    left: 359px;
    width: 50px;
    height: 42px;
-   
 }
-
 .egg_blok_1{
    position: relative;
 }
-
 .egg{
    position: absolute;
    display: none; 
@@ -399,7 +425,7 @@
    background-size: cover;
 }
 .hare.active{
-   display: none;
+   display: block;
 }
 .egg_broken_blok{
    position: relative;
@@ -411,6 +437,18 @@
 }
 .egg_broken.active{
    display: block;
+}
+.egg_broken.anime{
+   display: block;
+   animation: nev 1s infinite alternate;
+}
+@keyframes nev {
+   from { /* От */
+   opacity: 0.1; /* полная прозрачность */
+   }
+   to { /* До */
+   opacity: 1; /* полная непрозрачность */
+   }
 }
 .egg_broken_blok>div:nth-child(1){
    top: 130px;

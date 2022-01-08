@@ -3,6 +3,13 @@
 const button = document.querySelectorAll('.button');
 const wolf = document.querySelectorAll('.wolf-el');
 const basket = document.querySelectorAll('.basket-el');
+const sound = document.querySelector('#sound')
+let wolfPosition = 0 //положение волка
+let soundPrizn = true
+sound.addEventListener("click", soundClik);
+function soundClik(){
+   soundPrizn = !soundPrizn
+}
 
 button.forEach(element => {
    element.addEventListener("mousedown", buttonDown);
@@ -11,50 +18,42 @@ button.forEach(element => {
 
 function buttonDown(e) {
    e.stopPropagation();
-   const n = e.target.attributes.date.value
+   const n = +e.target.attributes.date.value
    e.target.classList.add('down')
-   if (game){game.craateWolfPosition(n)
-    } else{
-      createWolf(n)
-   }
+   createWolf(n)
+   
 }
 
 function buttonUp(e) {
    e.stopPropagation();
    e.target.classList.remove('down')
 }
-//отрисовка волка
+
+//определение положения волка
 function createWolf(n) {
-   delBasket()
-   switch (+n) {
-      case  0:
-         basket[0].classList.add('active') 
-         delWolf(0,1)
-         break;
+   delBasket(n)
+   switch (n) {
+      case 0:
       case 1:
-         basket[1].classList.add('active') 
          delWolf(0,1)
          break;
       case 2:
-         basket[2].classList.add('active') 
-         delWolf(1,0)
-         break;
       case 3:
-         basket[3].classList.add('active') 
          delWolf(1,0)
          break;
       default:
          break;
    }
+   wolfPosition = n
 }
-//стирание корзины
-function delBasket(){
-   basket.forEach(element => {
-      element.classList.remove('active')
-   });
+//перерисовка корзины
+function delBasket(n){
+   basket[wolfPosition].classList.remove('active')
+   basket[n].classList.add('active')
 }
 //перерисовка волка
 function delWolf(active, noActive){
+    
    wolf[active].classList.add('active')
    wolf[noActive].classList.remove('active')
 }
@@ -124,13 +123,16 @@ class ButtonM {
       `
    }
 }
-//блок кнопок управления режимаки игры и время
+//блок кнопок управления режимами игры и время
 class ButtonBlokM {
    blok=[]
+   priznDown=false
    constructor(n){
       for (let index = 0; index < n; index++) {
          this.blok.push(new ButtonM(index)) ;
+         //this.priznDown.push('false')
       }
+     
    }
    // добавление кнопок в дом и навешивание слушателей нажатия и отпускания кнопки
    creatButtonBlokM() {
@@ -151,26 +153,36 @@ class ButtonBlokM {
       });
    }
 
+   getPriznDown(){
+      return this.priznDown
+   }
    //функция обработки нажания на кнопку 
    buttonDown(e) {
       e.stopPropagation();
       const n = e.target.attributes.date.value
       e.target.classList.add('down')
+      console.log(blokButtonM.getPriznDown())
       switch (n) {
          case  '0':
-            if (game.gameStart) { 
+            if (blokButtonM.getPriznDown()) { 
                break
             } else {
-               game.startGame(1,0)   
-               game.gameVisible('a')
+               blokButtonM.priznDown = true
+               const game = new Game()
+               game.startGame(1,0)   //
+               game.gameVisible('a') //отрисовка надписи игра А
                let int = setTimeout(function run() {
                   game.gameA();
+                  if (game.endGameSign) {
+                     blokButtonM.priznDown = false
+                     return}
+                  
                   setTimeout(run, game.sped);
                }, 100)
             }
             break;
          case '1':
-            game.gameVisible('b')
+            //game.gameVisible('b')
             break;
          case '2':
             break;
@@ -188,7 +200,7 @@ class ButtonBlokM {
 }
 
 class Game {
-   wolfPosition = 0 //положение волка
+  // wolfPosition = 0 //положение волка
    total = 0 // счетчик очков
    counter = 0 // счетчик тактов
    sped = 1000 // переодичность обновления кадра
@@ -200,14 +212,12 @@ class Game {
    predNewEgg = 4 //номер лотка на котором было предыдущее яйцо
    eggTotal = 0 //колличество яиц на лотках
    brokenEgg = 0 // счетчик разбитых яиц
-   gameStart = false
-   trays = [
-      [0,0,0,0,0,0],
-      [0,0,0,0,0,0],
-      [0,0,0,0,0,0],
-      [0,0,0,0,0,0],
-   ]
-   
+   gameStart = false // признак запущенной игры
+   endGameSign = false //признак окончания игры
+   trays = [] //массив описания расположения яиц на лотках
+   hareInterval = 0 // временной интервал появления зайца
+   timeHare = 0 //время до появления зайца
+   priznHare = false // признак появления зайца
    upTotal(){
       ++this.total
    }
@@ -217,7 +227,10 @@ class Game {
    getTotal(){
       return this.total
    }
-   //обнуления счета
+   getAnimeEndbrokenEgg(){
+      return this.animeEndbrokenEgg
+   }
+   //обнуление состояния лотков с яйцами
    traysNull() {
       this.trays = [
          [0,0,0,0,0,0],
@@ -227,27 +240,64 @@ class Game {
       ]
       this.eggTotal = 0
    }
-
-   craateWolfPosition(n){
-      this.wolfPosition = n
-      createWolf(n)
+   //расчет интервала до появления зайца
+   calcHareInterval(){
+      this.hareInterval = Math.floor(Math.random()*25 + 5)*1000
+   }
+   //таймер до появления зайца
+   calcTimeHare(){
+      this.timeHare += this.sped
    }
 
    startGame(n,l){
       this.total = 0
-      this.craateWolfPosition(n)
-      this.newTrays(l)
+      this.eggBrokenDel() //удаления индикации разбитых яиц
+      this.traysNull() //обнуление состояния лотков с яйцами
+      createWolf(n) //отрисовка положения волка
+      this.newTrays(l) // добавление яйца 
       this.gameStart = true
+      this.endGameSign = false
    }
 
    gameA() {
-      this.rendering()
-      this.checkTrays()
-      this.offsetTrays()
-      this.upCounter() //
-      this.controlCounter()
+      score.rendering(this.getTotal()) // отрисовать счет
+      this.rendering() // отрисовка яиц на лотках
+      this.checkTrays() // проверка на попадание в корзину
+      this.offsetTrays() // смещение яиц
+      this.upCounter() // увеличение счетчика тактов
+      this.controlCounter() //проверка счетчика и
+      this.dvigSound()  // звук движения 
+      this.calcTimeHare() //увеличение таймера до пояления зайца
+      this.checkingAppearanceHare() //проверка появления зайца
+   }
+   //проверка появления зайца
+   checkingAppearanceHare(){
+      //console.log (this.hareInterval)
+     // console.log (this.timeHare)
+      if (this.hareInterval <= this.timeHare){
+         this.priznHare = true
+         let blok= document.querySelector(`.hare`)
+         blok.classList.add('active')
+         this.timeHare = 0
+         const tim = Math.floor(Math.random()*5 + 3)*1000
+         this.calcHareInterval()
+         setTimeout(()=>{
+            this.priznHare = false
+            let blok= document.querySelector(`.hare`)
+            blok.classList.remove('active')
+            this.timeHare = 0
+         },tim)
+      }
    }
 
+   //на окончание игры. проверка колличества разбитых яиц
+   endGame(){
+      if (this.brokenEgg >= 3) { 
+         this.endGameSound()
+         this.endGameSign = true
+         this.gameStart = false
+         }
+   }
    //новое яйцо
    newTrays(lot){
       this.trays[lot][0] = 1
@@ -265,20 +315,85 @@ class Game {
    checkTrays(){
       for (let index = 0; index < 4; index++) {
          if (this.trays[index][5] === 1) {
-            if ( +this.wolfPosition === +index){
+            if ( +wolfPosition === +index){
                this.upTotal() //увеличить счет
-               score.rendering(this.getTotal())
+               this.upSound() //звук 
+               score.rendering(this.getTotal()) //отрисовать счет
               // console.log('счет -', this.getTotal())//отрисовка счета
             } else { 
               // console.log("яйцо упало")//}
-               this.traysNull()
-               this.eggFallen(+index)
+               this.traysNull() // обнуление поля
+               this.rendering() // отрисовка поля
+               this.eggFallen(+index) // анимация убегающего цыпленка
+               this.eggBroken() // отрисовка разбитого яйца
+               this.endGame() // проверка на окончание игры
             }
             --this.eggTotal
          }
       }
    }
+   // отрисовка количества разбитых яиц
+   eggBroken(){
+      let blok= document.querySelector(`.egg_broken_blok`)
+      let n = Math.floor(this.brokenEgg)
+         
+         if (this.priznHare) {
+            
+            if(blok.children[n].classList.contains('anime')){
+               blok.children[n].classList.remove('anime')
+               blok.children[n].classList.add('active')
+            } else {
+               blok.children[n].classList.add('anime')
+            }
+            this.brokenEgg += 0.5
+         }else{
+            
+            if(blok.children[n].classList.contains('anime')){
+               blok.children[n].classList.remove('anime')
+               blok.children[n].classList.add('active')
+               if ((n+1)<3){blok.children[n+1].classList.add('anime')}
+            } else {
+               blok.children[n].classList.add('active')
+            }
+            ++this.brokenEgg
+         }
+   }
+    // удаление количества разбитых яиц
+   eggBrokenDel(){
+      let blok= document.querySelectorAll(`.egg_broken`)
+      for (let i = 0; i< blok.length; i++) {
+         blok[i].classList.remove('active')
+         blok[i].classList.remove('anime')
+      }
+      this.brokenEgg = 0
+   }
 
+   //звук при попадании яйца в корзину
+   upSound() {
+      if (!soundPrizn) return
+      let blok= document.querySelector(`.contener`)
+      let audiTrek = `<audio id="upsound" src="./sound/up1.mp3" autoplay loop></audio>`
+      blok.insertAdjacentHTML("beforeend", audiTrek);
+      setTimeout(() => upsound.remove(), 400);
+   }
+   //звук при движении яйца по лотку
+   dvigSound() {
+      if (!soundPrizn) return
+      let blok= document.querySelector(`.contener`)
+      let audiTrek = `<audio id="dvigsound" src="./sound/dv1.mp3" autoplay loop></audio>`
+      blok.insertAdjacentHTML("beforeend", audiTrek);
+      setTimeout(() => dvigsound.remove(), 400);
+   }
+   //звук окончания игры после трех разбитых яиц
+   endGameSound() {
+      if (!soundPrizn) return
+      let blok= document.querySelector(`.contener`)
+      let audiTrek = `<audio id="endgamesound" src="./sound/konez.mp3" autoplay ></audio>`
+      blok.insertAdjacentHTML("beforeend", audiTrek);
+      setTimeout(() => endgamesound.remove(), 1400);
+   }
+
+   // проверка счетчика, добавление нового яйца или изменение состояния
    controlCounter(){
       if (this.counter % this.interval === 0 && this.eggTotal < this.maxEgg){
          let n = 0
@@ -293,7 +408,7 @@ class Game {
          ++this.countUpSped
       }
    }
-
+   //отрисовка яиц на лотках
    rendering(){
       for (let er = 0; er < 4; er++){
          let egg_blok= document.querySelector(`.egg_blok_${er}`)
@@ -307,53 +422,16 @@ class Game {
       }
    }
 
-   //анимация в случае падения яйца
-   async eggFallen(n){
+   //выбор анимации в случае падения яйца
+    eggFallen(n){
       switch (n) {
          case 0:
          case 1:
-            const blok = document.querySelector('.chicken_blok_left');
-            let rr=0
-            setTimeout(function eggRend() {
-               if (rr<5) {
-                  blok.children[rr].classList.add('active')
-               }
-                              
-               if (rr>0){
-                  blok.children[rr-1].classList.remove('active') 
-               }
-                  rr++
-                  if (rr===6){return }
-                setTimeout(eggRend, 800);
-            }, 100);
-           
-            
-            // for (let i = 0; i<5; i++) {
-            //    blok.children[i].classList.add('active')
-            //    setTimeout(() =>{
-            //       blok.children[i].classList.remove('active')
-            //    }, 800);
-            // }
-            
-               //console.dir(blok)
+            this.eggFallenAnime ('.chicken_blok_left')
          break;
          case 2:
          case 3:
-            const blok1 = document.querySelector('.chicken_blok_right');
-            let rr1=0
-            setTimeout(function eggRend() {
-               if (rr1<5) {
-                  blok1.children[rr1].classList.add('active')
-               }
-                              
-               if (rr1>0){
-                  blok1.children[rr1-1].classList.remove('active') 
-               }
-                  rr1++
-                  if (rr1===6){return }
-                setTimeout(eggRend, 800);
-              }, 100);
-            
+            this.eggFallenAnime ('.chicken_blok_right')
          break;
          
          default:
@@ -361,6 +439,34 @@ class Game {
       }
       
    }
+   //анимация в случае падения яйца
+   async eggFallenAnime (elem) {
+      const blok = document.querySelector(elem);
+      let audiTrek = `<audio id="audio" src="./sound/razb1.mp3" autoplay loop></audio>`
+      blok.insertAdjacentHTML("beforeend", audiTrek);
+
+      let rr=0
+      await new Promise((resolve, reject) =>
+         setTimeout(function eggRend() {
+            if (rr<5) {
+               blok.children[rr].classList.add('active')
+            }
+                                 
+            if (rr>0) {
+               blok.children[rr-1].classList.remove('active') 
+            }
+            rr++
+            if (rr===6) {
+               audio.remove()
+               this.animeEndbrokenEgg = false
+               return 
+            }
+            setTimeout(eggRend, 500);
+         }, 100)
+      )   
+   }
+
+
    //отрисовка игра А или игра Б
    gameVisible(n){
       const blok = document.querySelector('.game_blok');
@@ -404,8 +510,22 @@ class Scoreboard {
          sch--
       }
    }
-
+   // добавление элементов в дом
+   creatScoreBlok() {
+      let blokZel =''
+      let blokBlokZ =`<div class="blok-blok-z">`
+      for (let index = 0; index < 7; index++) {
+         blokZel += `<div class="z-el"></div>`
+      }
+      for (let index = 0; index < 4; index++) {
+         blokBlokZ += `<div class="blok-z">${blokZel}</div>`
+      }
+      blokBlokZ += `</div>`
+      const blok = document.querySelector('.wrapper')
+      blok.insertAdjacentHTML("beforeend", blokBlokZ);
+   }
 }
+
 
 const blokEgg = new Pole()
 blokEgg.activatePole()
@@ -413,7 +533,9 @@ blokEgg.activatePole()
 const blokButtonM = new ButtonBlokM (3)
 blokButtonM.creatButtonBlokM()
 
-const game = new Game()
+
 const score = new Scoreboard()
+score.creatScoreBlok()
+
 
 //console.log( game)
