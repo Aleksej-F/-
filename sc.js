@@ -171,18 +171,35 @@ class ButtonBlokM {
                const game = new Game()
                game.startGame(1,0)   //
                game.gameVisible('a') //отрисовка надписи игра А
-               let int = setTimeout(function run() {
-                  game.gameA();
+               let int = setTimeout(async function run() {
+                  await game.gameA();
+                  game.controlCounter() //проверка счетчика и
                   if (game.endGameSign) {
                      blokButtonM.priznDown = false
-                     return}
-                  
+                     return
+                  }
+                 
                   setTimeout(run, game.sped);
                }, 100)
             }
             break;
          case '1':
-            //game.gameVisible('b')
+            if (blokButtonM.getPriznDown()) { 
+               break
+            } else {
+               blokButtonM.priznDown = true
+               const game = new Game()
+               game.startGame(1,0)   //
+               game.gameVisible('b') //отрисовка надписи игра Б
+               let int = setTimeout(function run() {
+                  game.gameA();
+                  game.controlCounterB() //проверка счетчика и
+                  if (game.endGameSign) {
+                     blokButtonM.priznDown = false
+                     return}
+                  setTimeout(run, game.sped);
+               }, 100)
+            }
             break;
          case '2':
             break;
@@ -206,8 +223,9 @@ class Game {
    sped = 1000 // переодичность обновления кадра
    interval = 5 // интервал появления новых яиц
    maxEgg = 5 //максимальное количество яиц на лотках
-   zeroingSped = [5, 100, 200, 500, 999]
-   upSped = [5, 10, 15, 20, ]
+   zeroingSped = [100, 200,300,400, 500, 600, 700, 800, 999,]
+   countZeroingSped = 0 // номер в массиве
+   upSped = [5, 10, 15, 20, 0]
    countUpSped = 0 // номер в массиве upSped
    predNewEgg = 4 //номер лотка на котором было предыдущее яйцо
    eggTotal = 0 //колличество яиц на лотках
@@ -218,6 +236,7 @@ class Game {
    hareInterval = 0 // временной интервал появления зайца
    timeHare = 0 //время до появления зайца
    priznHare = false // признак появления зайца
+   
    upTotal(){
       ++this.total
    }
@@ -227,9 +246,9 @@ class Game {
    getTotal(){
       return this.total
    }
-   getAnimeEndbrokenEgg(){
-      return this.animeEndbrokenEgg
-   }
+  
+  
+
    //обнуление состояния лотков с яйцами
    traysNull() {
       this.trays = [
@@ -251,21 +270,20 @@ class Game {
 
    startGame(n,l){
       this.total = 0
-      this.eggBrokenDel() //удаления индикации разбитых яиц
-      this.traysNull() //обнуление состояния лотков с яйцами
-      createWolf(n) //отрисовка положения волка
+      this.eggBrokenDel() // удаления индикации разбитых яиц
+      this.traysNull() // обнуление состояния лотков с яйцами
+      createWolf(n) // отрисовка положения волка
       this.newTrays(l) // добавление яйца 
       this.gameStart = true
       this.endGameSign = false
    }
 
-   gameA() {
+  async gameA() {
       score.rendering(this.getTotal()) // отрисовать счет
       this.rendering() // отрисовка яиц на лотках
-      this.checkTrays() // проверка на попадание в корзину
+     await this.checkTrays() // проверка на попадание в корзину
       this.offsetTrays() // смещение яиц
       this.upCounter() // увеличение счетчика тактов
-      this.controlCounter() //проверка счетчика и
       this.dvigSound()  // звук движения 
       this.calcTimeHare() //увеличение таймера до пояления зайца
       this.checkingAppearanceHare() //проверка появления зайца
@@ -290,7 +308,7 @@ class Game {
       }
    }
 
-   //на окончание игры. проверка колличества разбитых яиц
+   //проверка на окончание игры. проверка колличества разбитых яиц
    endGame(){
       if (this.brokenEgg >= 3) { 
          this.endGameSound()
@@ -312,33 +330,31 @@ class Game {
       }
    }
    //проверка на попадание в корзину
-   checkTrays(){
+   async checkTrays(){
+     
       for (let index = 0; index < 4; index++) {
          if (this.trays[index][5] === 1) {
             if ( +wolfPosition === +index){
                this.upTotal() //увеличить счет
                this.upSound() //звук 
                score.rendering(this.getTotal()) //отрисовать счет
-              // console.log('счет -', this.getTotal())//отрисовка счета
             } else { 
-              // console.log("яйцо упало")//}
                this.traysNull() // обнуление поля
                this.rendering() // отрисовка поля
-               this.eggFallen(+index) // анимация убегающего цыпленка
                this.eggBroken() // отрисовка разбитого яйца
+               await  this.eggFallen(+index);// анимация убегающего цыпленка
                this.endGame() // проверка на окончание игры
             }
             --this.eggTotal
          }
       }
+      
    }
    // отрисовка количества разбитых яиц
    eggBroken(){
       let blok= document.querySelector(`.egg_broken_blok`)
       let n = Math.floor(this.brokenEgg)
-         
          if (this.priznHare) {
-            
             if(blok.children[n].classList.contains('anime')){
                blok.children[n].classList.remove('anime')
                blok.children[n].classList.add('active')
@@ -347,7 +363,6 @@ class Game {
             }
             this.brokenEgg += 0.5
          }else{
-            
             if(blok.children[n].classList.contains('anime')){
                blok.children[n].classList.remove('anime')
                blok.children[n].classList.add('active')
@@ -392,9 +407,51 @@ class Game {
       blok.insertAdjacentHTML("beforeend", audiTrek);
       setTimeout(() => endgamesound.remove(), 1400);
    }
+   //звук анимации убегающего цыпленка
+   animeChickenSound() {
+      if (!soundPrizn) return
+      let blok= document.querySelector(`.contener`)
+      let audiTrek = `<audio id="audio" src="./sound/razb1.mp3" autoplay loop></audio>`
+      blok.insertAdjacentHTML("beforeend", audiTrek);
+      setTimeout(() => audio.remove(), 2600);
+   }
 
    // проверка счетчика, добавление нового яйца или изменение состояния
    controlCounter(){
+      if (this.counter % this.interval === 0 && this.eggTotal < this.maxEgg){
+         let n = 0
+         let quantity = true
+         do {
+            n = Math.floor(Math.random() * 4)
+            if (n === this.predNewEgg) {continue}
+            quantity = this.trays[n].some((element) => element === 1)
+            if (!quantity) {
+               let r = 0
+               for (let i = 0; i < this.trays.length; i++){
+                  if (this.trays[i].some((element) => element === 1)) { r++}
+               }
+               if (r > 2) {quantity = true }
+            } else {quantity = false}
+         } while ( quantity );
+         this.predNewEgg = n
+         this.newTrays(n)
+      }
+      if (this.total === this.upSped[this.countUpSped]) {
+         --this.interval 
+         ++this.countUpSped
+         
+      } else if (this.total > this.upSped[this.countUpSped]) {
+         if ( this.sped > 400)  { this.sped -= 5}
+      }
+      if (this.total === this.zeroingSped[this.countZeroingSped]) {
+         ++this.countZeroingSped
+         this.sped = 1000
+      }
+
+      console.log(this.sped,'     -   ', this.upSped[this.countUpSped])
+   }
+   // проверка счетчика, добавление нового яйца или изменение состояния
+   controlCounterB(){
       if (this.counter % this.interval === 0 && this.eggTotal < this.maxEgg){
          let n = 0
          do {
@@ -406,9 +463,16 @@ class Game {
       if (this.total === this.upSped[this.countUpSped]) {
          --this.interval 
          ++this.countUpSped
+      }else if (this.total > this.upSped[this.countUpSped]) {
+         if ( this.sped > 400)  { this.sped -= 10}
+      }
+      if (this.total === this.zeroingSped[this.countZeroingSped]) {
+         ++this.countZeroingSped
+         this.sped = 1000
       }
    }
-   //отрисовка яиц на лотках
+
+   // отрисовка яиц на лотках
    rendering(){
       for (let er = 0; er < 4; er++){
          let egg_blok= document.querySelector(`.egg_blok_${er}`)
@@ -422,50 +486,47 @@ class Game {
       }
    }
 
-   //выбор анимации в случае падения яйца
-    eggFallen(n){
+   // выбор анимации в случае падения яйца
+   async   eggFallen(n){
+      
       switch (n) {
          case 0:
          case 1:
-            this.eggFallenAnime ('.chicken_blok_left')
+            await this.eggFallenAnime ('.chicken_blok_left')
          break;
          case 2:
          case 3:
-            this.eggFallenAnime ('.chicken_blok_right')
+            await this.eggFallenAnime ('.chicken_blok_right')
          break;
          
          default:
-             break;
+            break;
       }
       
    }
    //анимация в случае падения яйца
    async eggFallenAnime (elem) {
+      this.animeChickenSound()
       const blok = document.querySelector(elem);
-      let audiTrek = `<audio id="audio" src="./sound/razb1.mp3" autoplay loop></audio>`
-      blok.insertAdjacentHTML("beforeend", audiTrek);
-
       let rr=0
-      await new Promise((resolve, reject) =>
+      let result = true
+      let promise = new Promise((resolve, reject) =>
          setTimeout(function eggRend() {
             if (rr<5) {
                blok.children[rr].classList.add('active')
             }
-                                 
             if (rr>0) {
                blok.children[rr-1].classList.remove('active') 
             }
             rr++
             if (rr===6) {
-               audio.remove()
-               this.animeEndbrokenEgg = false
-               return 
+               return resolve(false)
             }
             setTimeout(eggRend, 500);
          }, 100)
-      )   
+      ) 
+      result = await promise; 
    }
-
 
    //отрисовка игра А или игра Б
    gameVisible(n){
@@ -487,16 +548,23 @@ class Scoreboard {
       2: [0,1,1,1,1,0,1],
       3: [0,1,1,1,0,1,1],
       4: [1,0,1,1,0,1,0],
-      5: [1,0,1,1,0,1,0],
+      5: [1,1,0,1,0,1,1],
       6: [1,1,0,1,1,1,1],
       7: [0,1,1,0,0,1,0],
       8: [1,1,1,1,1,1,1],
-      9: [1,1,1,1,0,1,1]
+      9: [1,1,1,1,0,1,1],
+      10: [0,0,0,0,0,0,0]
    }
-   //отрисовка счета
+   // отрисовка счета
    rendering(n) {
-      const str = n.toString()
-      const arir = str.split('')
+      let arir = []
+      if (n==0) {
+         arir = [10,10,10,0]
+      } else {
+         let str = n.toString()
+         arir = str.split('')
+      }
+      
       const score = document.querySelectorAll('.blok-z');
       let sch = arir.length - 1
       for (let i = 0; i < arir.length; i++){
@@ -526,16 +594,11 @@ class Scoreboard {
    }
 }
 
-
 const blokEgg = new Pole()
 blokEgg.activatePole()
 
 const blokButtonM = new ButtonBlokM (3)
 blokButtonM.creatButtonBlokM()
 
-
 const score = new Scoreboard()
 score.creatScoreBlok()
-
-
-//console.log( game)
