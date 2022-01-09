@@ -138,7 +138,6 @@ class ButtonBlokM {
    creatButtonBlokM() {
       let bl = ''
       this.blok.forEach(element => {
-        // console.log(element.blok)
          bl += element.blok
       });
       const blok = document.querySelector('.wrapper')
@@ -161,7 +160,6 @@ class ButtonBlokM {
       e.stopPropagation();
       const n = e.target.attributes.date.value
       e.target.classList.add('down')
-      console.log(blokButtonM.getPriznDown())
       switch (n) {
          case  '0':
             if (blokButtonM.getPriznDown()) { 
@@ -191,8 +189,8 @@ class ButtonBlokM {
                const game = new Game()
                game.startGame(1,0)   //
                game.gameVisible('b') //отрисовка надписи игра Б
-               let int = setTimeout(function run() {
-                  game.gameA();
+               let int = setTimeout(async function run() {
+                  await game.gameA();
                   game.controlCounterB() //проверка счетчика и
                   if (game.endGameSign) {
                      blokButtonM.priznDown = false
@@ -290,8 +288,6 @@ class Game {
    }
    //проверка появления зайца
    checkingAppearanceHare(){
-      //console.log (this.hareInterval)
-     // console.log (this.timeHare)
       if (this.hareInterval <= this.timeHare){
          this.priznHare = true
          let blok= document.querySelector(`.hare`)
@@ -447,8 +443,6 @@ class Game {
          ++this.countZeroingSped
          this.sped = 1000
       }
-
-      console.log(this.sped,'     -   ', this.upSped[this.countUpSped])
    }
    // проверка счетчика, добавление нового яйца или изменение состояния
    controlCounterB(){
