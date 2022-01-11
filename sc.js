@@ -61,15 +61,15 @@ function delWolf(active, noActive){
 // яйцо
 class Egg {
    block= `
-   <svg width="8px" height="8px" xmlns="http://www.w3.org/2000/svg" class="egg" >
-               <g inkscape:groupmode="layer" id="layer3" inkscape:label="Layer 2">
+   <svg width="2vh" height="2vh"  class="egg" >
+              
                   <path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" 
                   d="M 1.4072884,0.71640787 C 0.79510341,1.3178379 0.66082841,1.9442679 0.48855141,2.7793879 c -0.01894,0.90058 -0.04832,1.14409
                      0.108577,2.01288 0.182144,0.57693 0.388154,1.21694 1.22776899,1.72055 0.65188,0.27383 0.807937,0.32271 1.277884,0.26726 0.564961,-0.0415
                      0.912057,-0.34618 1.169304,-0.65147 0.36236,-0.49781 0.480609,-0.97097 0.517833,-1.56185 -0.03993,-0.55973 -0.0452,-1.05629 
                      -0.300678,-1.63703 -0.177904,-0.40174 -0.367094,-0.70654 -0.768399,-1.14425 -0.359651,-0.33845 -0.579084,-0.50113 -0.977205,-0.71829
                      C 2.1864914,0.82057787 1.8260394,0.73694787 1.4072884,0.71640787 Z" 
-                  id="path4531" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccc"/></g>
+                  />
             </svg>
    `;
 }
