@@ -9,7 +9,7 @@ padding: 0;}
    width:  173vh;
    height: 100vh;
    /* background-color: rgb(221 219 225); */
-   background-image: url(images/background1.jpg);
+   background-image: url(images/background.jpg);
    background-size: cover;
    position: relative;
 }
